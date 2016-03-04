@@ -1,0 +1,82 @@
+﻿<Controls:MetroWindow x:Class="MediaSolution.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      Title="Media Player" ShowIconOnTitleBar="True" Height="450" Width="600" MinHeight="450" MinWidth="600" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" ResizeMode="CanResizeWithGrip">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout x:Name="maFlyout" Header="Playing" Position="Right" Width="200">
+                <!--<TextBlock FontSize="24">Hello World</TextBlock>-->
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <ToggleButton Content="List" IsChecked="{Binding ElementName=maFlyout, Path=IsOpen}" Cursor="Hand"/>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+    <Grid x:Name="gridMP" Margin="0" Drop="MP_Drop" Background="Transparent" AllowDrop="True" Width="Auto" Height="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <GridSplitter Background="Transparent" ResizeDirection="Rows" HorizontalAlignment="Stretch" Margin="0" Height="10" Grid.Column="0" Grid.ColumnSpan="1" VerticalAlignment="Stretch" Width="Auto" Grid.Row="1"/>
+        <MediaElement x:Name="mePlayer" HorizontalAlignment="Stretch" Height="Auto" Margin="0" VerticalAlignment="Stretch" Width="Auto" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="2" MediaOpened="mePlayer_MediaOpened" ScrubbingEnabled="True" MediaEnded="mePlayer_MediaEnded"/>
+        <Grid HorizontalAlignment="Stretch" Height="Auto" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" VerticalAlignment="Stretch" Width="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnPlayPause" Content="Play" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Click="btnPlayPause_Click" BorderBrush="{x:Null}" Foreground="Black" Background="{DynamicResource {x:Static SystemColors.GradientActiveCaptionBrushKey}}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1"/>
+            <Button x:Name="btnStop" Content="Stop" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Click="btnStop_Click" Background="{DynamicResource {x:Static SystemColors.GradientActiveCaptionBrushKey}}" Foreground="Black" BorderBrush="{x:Null}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1"/>
+            <Viewbox HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1">
+                <Label x:Name="lblSeek" Content="00:00:00" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1" FontFamily="Times New Roman" FontSize="11" FontWeight="Bold" RenderTransformOrigin="0.081,0.593"/>
+            </Viewbox>
+            <Slider x:Name="sliSeek" Thumb.DragStarted="MySlider_DragStarted" Thumb.DragCompleted="MySlider_DragCompleted" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="22" ValueChanged="sliSeek_ValueChanged" Focusable="False" Cursor="Hand" IsMoveToPointEnabled="True" IsSelectionRangeEnabled="True" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="4" Grid.RowSpan="1"/>
+            <Viewbox HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1">
+                <Label x:Name="lblTotalSeek" Content="00:00:00" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" RenderTransformOrigin="0.375,0.452" Width="Auto" Height="Auto" Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1" FontFamily="Times New Roman" FontSize="11" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Grid.Column="8" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1">
+                <ToggleButton x:Name="tBtnMute" Style="{DynamicResource MetroCircleToggleButtonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,-2,6,-1" Height="50" Width="50" Click="tBtnMute_Click" Grid.Column="8" Grid.ColumnSpan="1" Grid.RowSpan="1">
+                    <Rectangle Width="25" Height="25" Fill="{DynamicResource BlackBrush}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_sound_mute}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </ToggleButton>
+            </Viewbox>
+            <Slider x:Name="sliVol" Thumb.DragStarted="VolSlider_DragStarted" Thumb.DragCompleted="VolSlider_DragCompleted" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="21" ValueChanged="sliVol_ValueChanged" Maximum="100" RenderTransformOrigin="0.556,-0.12" Background="{x:Null}" Foreground="#FFFBFBFB" OpacityMask="Black" AutoToolTipPlacement="BottomRight" MouseEnter="sliVol_MouseEnter" Cursor="Hand" IsMoveToPointEnabled="True" Grid.Column="9" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="1"/>
+            <Viewbox HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Grid.Column="11" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1">
+                <ToggleButton x:Name="tBtnExpand" Style="{DynamicResource MetroCircleToggleButtonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,-2,6,-1" Height="50" Width="50" Click="tBtnExpand_Click" Grid.Column="11" Grid.ColumnSpan="1" Grid.RowSpan="1">
+                    <Rectangle Width="25" Height="25" Fill="{DynamicResource BlackBrush}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_arrow_expand}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </ToggleButton>
+            </Viewbox>
+        </Grid>
+    </Grid>
+</Controls:MetroWindow>
