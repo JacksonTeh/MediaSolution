@@ -1,20 +1,22 @@
-﻿<Controls:MetroWindow x:Class="MediaSolution.MainWindow"
+﻿<Controls:MetroWindow
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="MediaSolution.MainWindow"
                       Title="Media Player" ShowIconOnTitleBar="True" Height="450" Width="600" MinHeight="450" MinWidth="600" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" ResizeMode="CanResizeWithGrip">
 
-    <Window.Resources>
+    <Controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </Window.Resources>
+    </Controls:MetroWindow.Resources>
 
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout x:Name="maFlyout" Header="Playing" Position="Right" Width="200">
+            <Controls:Flyout x:Name="maFlyout" Header="Playing" Position="Right" Width="250">
+                <ListBox x:Name="listBox" MouseDoubleClick="listBox_MouseDoubleClick"></ListBox>
                 <!--<TextBlock FontSize="24">Hello World</TextBlock>-->
             </Controls:Flyout>
         </Controls:FlyoutsControl>
@@ -22,7 +24,7 @@
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <ToggleButton Content="List" IsChecked="{Binding ElementName=maFlyout, Path=IsOpen}" Cursor="Hand"/>
+            <ToggleButton Content="Playlist" IsChecked="{Binding IsOpen, ElementName=maFlyout}" Cursor="Hand"/>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
