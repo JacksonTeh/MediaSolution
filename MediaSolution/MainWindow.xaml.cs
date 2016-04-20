@@ -225,22 +225,54 @@ namespace MediaSolution
 
         private void listBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                ListBoxItem item;
+                int index = listBox.SelectedIndex;
+
+                for (int i = 0; i < listBox.Items.Count; i++)
+                {
+                    item = (ListBoxItem)listBox.Items[i];
+                    if (item.Content.ToString().Contains(">> "))
+                    {
+                        item.Content = item.Content.ToString().Substring(3);
+                    }
+                }
+
+                if (listBox.Items.Count > 0)
+                {
+                    loadPlayer(index);
+                    mePlayer.Play();
+                    btnPlayPause.Content = "Pause";
+                    timer.Start();
+                }
+            }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
             ListBoxItem item;
             int index = listBox.SelectedIndex;
 
-            for (int i = 0; i < listBox.Items.Count; i++)
+            item = (ListBoxItem)listBox.Items[index];
+            if (item.Content.ToString().Contains(">> "))
             {
-                item = (ListBoxItem)listBox.Items[i];
-                if (item.Content.ToString().Contains(">> "))
-                {
-                    item.Content = item.Content.ToString().Substring(3);
-                }
-            }
+                listBox.Items.RemoveAt(index);
+                filenames.RemoveAt(index);
 
-            loadPlayer(index);
-            mePlayer.Play();
-            btnPlayPause.Content = "Pause";
-            timer.Start();
+                if (index > listBox.Items.Count - 1)
+                    loadPlayer(0);
+                else
+                    loadPlayer(index);
+
+                mePlayer.Stop();
+                btnPlayPause.Content = "Play";
+            }
+            else
+            {
+                listBox.Items.RemoveAt(index);
+                filenames.RemoveAt(index);
+            }
         }
     }
 }

@@ -16,7 +16,18 @@
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <Controls:Flyout x:Name="maFlyout" Header="Playing" Position="Right" Width="250">
-                <ListBox x:Name="listBox" MouseDoubleClick="listBox_MouseDoubleClick"></ListBox>
+                <ListBox x:Name="listBox" MouseDoubleClick="listBox_MouseDoubleClick">
+                    <ListBox.Resources>
+                        <ContextMenu x:Key="listBoxItemContextMenu">
+                            <MenuItem Header="Delete" Click="MenuItem_Click"></MenuItem>
+                        </ContextMenu>
+                    </ListBox.Resources>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="ContextMenu" Value="{StaticResource listBoxItemContextMenu}"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
                 <!--<TextBlock FontSize="24">Hello World</TextBlock>-->
             </Controls:Flyout>
         </Controls:FlyoutsControl>
