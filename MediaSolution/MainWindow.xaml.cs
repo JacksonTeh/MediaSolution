@@ -60,14 +60,14 @@ namespace MediaSolution
             if (filenames.Count != 0)
             {
                 if (btn.Content.Equals("Play"))
-                {
-                    loadPlayer(0);
+                {                    
                     mePlayer.Play();
                     btn.Content = "Pause";
                     timer.Start();
                 }
                 else if (btn.Content.Equals("Pause"))
                 {
+                    timer.Stop();
                     mePlayer.Pause();
                     btn.Content = "Play";
                 }
@@ -152,6 +152,9 @@ namespace MediaSolution
                 item.Content = System.IO.Path.GetFileName(dropFiles[i]);
                 listBox.Items.Add(item);
             }
+
+            if (playIndex == -1)
+                loadPlayer(0);
         }
 
         private void loadPlayer(int index)
@@ -244,7 +247,9 @@ namespace MediaSolution
                     loadPlayer(index);
                     mePlayer.Play();
                     btnPlayPause.Content = "Pause";
-                    timer.Start();
+
+                    if (timer.IsEnabled == false)
+                        timer.Start();
                 }
             }
         }
@@ -257,6 +262,7 @@ namespace MediaSolution
             item = (ListBoxItem)listBox.Items[index];
             if (item.Content.ToString().Contains(">> "))
             {
+                item = null;
                 listBox.Items.RemoveAt(index);
                 filenames.RemoveAt(index);
 
@@ -267,6 +273,7 @@ namespace MediaSolution
 
                 mePlayer.Stop();
                 btnPlayPause.Content = "Play";
+                timer.Stop();
             }
             else
             {
