@@ -45,6 +45,7 @@ namespace MediaSolution
             timer.Interval = TimeSpan.FromMilliseconds(1000);
             timer.Tick += new EventHandler(timer_Tick);
             sliVol.Value = 100;
+            mePlayer.Volume = (double)sliVol.Value / 100;
             maFlyout.FontSize = 16;
         }
 
@@ -57,7 +58,7 @@ namespace MediaSolution
         {
             Button btn = sender as Button;
 
-            if (filenames.Count != 0)
+            if (filenames.Count != 0 && mePlayer.Source != null)
             {
                 if (btn.Content.Equals("Play"))
                 {                    
@@ -164,8 +165,6 @@ namespace MediaSolution
             itemChange.Content = ">> " + System.IO.Path.GetFileName(filenames[index]);
             mePlayer.LoadedBehavior = MediaState.Manual;
             mePlayer.UnloadedBehavior = MediaState.Manual;
-            mePlayer.Volume = (double)sliVol.Value / 100;
-            sliSeek.Value = 0;
             mePlayer.Play();
             mePlayer.Pause();
             playIndex = index;
@@ -182,16 +181,21 @@ namespace MediaSolution
         {
             if (filenames.Count - 1 == playIndex)
             {
+                mePlayer.Stop();
                 btnPlayPause.Content = "Play";
+                loadPlayer(playIndex);
                 sliSeek.Value = 0;
-                mePlayer.Position = TimeSpan.FromSeconds(sliSeek.Value);
-                mePlayer.Play();
-                mePlayer.Pause();
+                mePlayer.Position = TimeSpan.Zero;
                 timer.Stop();
             }
             else
             {
                 timer.Stop();
+                ListBoxItem item = (ListBoxItem)listBox.Items[playIndex];
+                if (item.Content.ToString().Contains(">> "))
+                {
+                    item.Content = item.Content.ToString().Substring(3);
+                }
                 loadPlayer(playIndex + 1);
                 mePlayer.Play();
                 timer.Start();
