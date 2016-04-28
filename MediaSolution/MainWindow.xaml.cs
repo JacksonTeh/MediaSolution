@@ -61,10 +61,10 @@ namespace MediaSolution
             if (filenames.Count != 0 && mePlayer.Source != null)
             {
                 if (btn.Content.Equals("Play"))
-                {                    
-                    mePlayer.Play();
-                    btn.Content = "Pause";
+                {
                     timer.Start();
+                    this.mePlayer.Play();
+                    btn.Content = "Pause";
                 }
                 else if (btn.Content.Equals("Pause"))
                 {
@@ -83,8 +83,10 @@ namespace MediaSolution
         {
             if (mePlayer.Source != null)
             {
+                timer.Stop();
                 mePlayer.Stop();
                 btnPlayPause.Content = "Play";
+                sliSeek.Value = 0;
             }
             else
             {
@@ -181,16 +183,16 @@ namespace MediaSolution
         {
             if (filenames.Count - 1 == playIndex)
             {
+                timer.Stop();
                 mePlayer.Stop();
                 btnPlayPause.Content = "Play";
-                loadPlayer(playIndex);
                 sliSeek.Value = 0;
-                mePlayer.Position = TimeSpan.Zero;
-                timer.Stop();
+                mePlayer.Source = new Uri(filenames[playIndex]);
             }
             else
             {
                 timer.Stop();
+                mePlayer.Stop();
                 ListBoxItem item = (ListBoxItem)listBox.Items[playIndex];
                 if (item.Content.ToString().Contains(">> "))
                 {
