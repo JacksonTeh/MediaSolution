@@ -24,15 +24,26 @@ namespace MediaSolution
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        DispatcherTimer timer;
+        DispatcherTimer timer = new DispatcherTimer();
         bool dragStarted = false, volDragStarted = false;
         double vol = 0;
         List<string> filenames = new List<string>();
         int playIndex = -1;
+        MediaElement meOld;
 
         public MainWindow()
         {
             InitializeComponent();
+            setIcon();
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Tick += new EventHandler(timer_Tick);
+            sliVol.Value = 100;
+            mePlayer.Volume = (double)sliVol.Value / 100;
+            maFlyout.FontSize = 16;
+        }
+
+        private void setIcon()
+        {
             string dir = Directory.GetCurrentDirectory();
             if (dir.Contains("bin"))
             {
@@ -41,12 +52,6 @@ namespace MediaSolution
             }
             Uri iconUri = new Uri(dir+ "/windows_media_player.png", UriKind.RelativeOrAbsolute);
             this.Icon = BitmapFrame.Create(iconUri);
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(1000);
-            timer.Tick += new EventHandler(timer_Tick);
-            sliVol.Value = 100;
-            mePlayer.Volume = (double)sliVol.Value / 100;
-            maFlyout.FontSize = 16;
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -62,14 +67,14 @@ namespace MediaSolution
             {
                 if (btn.Content.Equals("Play"))
                 {
+                    mePlayer.Play();
                     timer.Start();
-                    this.mePlayer.Play();
                     btn.Content = "Pause";
                 }
                 else if (btn.Content.Equals("Pause"))
                 {
-                    timer.Stop();
                     mePlayer.Pause();
+                    timer.Stop();
                     btn.Content = "Play";
                 }
             }
@@ -83,8 +88,8 @@ namespace MediaSolution
         {
             if (mePlayer.Source != null)
             {
-                timer.Stop();
                 mePlayer.Stop();
+                timer.Stop();
                 btnPlayPause.Content = "Play";
                 sliSeek.Value = 0;
             }
@@ -107,19 +112,6 @@ namespace MediaSolution
             }
         }
 
-        private void sliSeek_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (mePlayer.Source != null)
-            {
-                if (!dragStarted)
-                {
-                    mePlayer.Position = TimeSpan.FromSeconds(sliSeek.Value);
-                }
-
-                lblSeek.Content = mePlayer.Position.ToString(@"hh\:mm\:ss");
-            }
-        }
-
         private void MySlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             this.dragStarted = false;
@@ -137,6 +129,11 @@ namespace MediaSolution
         {
             this.volDragStarted = false;
             mePlayer.Volume = (double)sliVol.Value / 100;
+
+            if (sliVol.Value > 0)
+                tBtnMute.IsChecked = false;
+            else
+                tBtnMute.IsChecked = true;
         }
 
         private void VolSlider_DragStarted(object sender, DragStartedEventArgs e)
@@ -162,6 +159,12 @@ namespace MediaSolution
 
         private void loadPlayer(int index)
         {
+            if(System.IO.Path.GetExtension(filenames[index]) != ".mp3" && meOld != null)
+            {
+                mePlayer = null;
+                mePlayer = meOld;
+            }
+
             mePlayer.Source = new Uri(filenames[index]);
             ListBoxItem itemChange = (ListBoxItem)listBox.Items[index];
             itemChange.Content = ">> " + System.IO.Path.GetFileName(filenames[index]);
@@ -183,16 +186,17 @@ namespace MediaSolution
         {
             if (filenames.Count - 1 == playIndex)
             {
-                timer.Stop();
                 mePlayer.Stop();
+                timer.Stop();
                 btnPlayPause.Content = "Play";
                 sliSeek.Value = 0;
-                mePlayer.Source = new Uri(filenames[playIndex]);
+                createNewME();
+                loadPlayer(playIndex);
             }
             else
             {
-                timer.Stop();
                 mePlayer.Stop();
+                timer.Stop();
                 ListBoxItem item = (ListBoxItem)listBox.Items[playIndex];
                 if (item.Content.ToString().Contains(">> "))
                 {
@@ -202,6 +206,16 @@ namespace MediaSolution
                 mePlayer.Play();
                 timer.Start();
             }
+        }
+
+        private void createNewME()
+        {
+            meOld = mePlayer;
+            mePlayer = null;
+            mePlayer = new MediaElement();
+            mePlayer.MediaEnded += mePlayer_MediaEnded;
+            mePlayer.MediaOpened += mePlayer_MediaOpened;
+            mePlayer.Volume = (double)sliVol.Value / 100;
         }
 
         private void sliVol_MouseEnter(object sender, MouseEventArgs e)
@@ -272,10 +286,13 @@ namespace MediaSolution
                 listBox.Items.RemoveAt(index);
                 filenames.RemoveAt(index);
 
-                if (index > listBox.Items.Count - 1)
-                    loadPlayer(0);
-                else
-                    loadPlayer(index);
+                if (listBox.Items.Count > 0)
+                {
+                    if (index > listBox.Items.Count - 1)
+                        loadPlayer(0);
+                    else
+                        loadPlayer(index);
+                }
 
                 mePlayer.Stop();
                 btnPlayPause.Content = "Play";
@@ -285,6 +302,19 @@ namespace MediaSolution
             {
                 listBox.Items.RemoveAt(index);
                 filenames.RemoveAt(index);
+            }
+        }
+
+        private void sliSeek_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (mePlayer.Source != null)
+            {
+                if (!dragStarted)
+                {
+                    mePlayer.Position = TimeSpan.FromSeconds(sliSeek.Value);
+                }
+
+                lblSeek.Content = mePlayer.Position.ToString(@"hh\:mm\:ss");
             }
         }
     }

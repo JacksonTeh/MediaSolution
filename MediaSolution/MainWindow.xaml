@@ -28,7 +28,6 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
-                <!--<TextBlock FontSize="24">Hello World</TextBlock>-->
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
@@ -67,7 +66,7 @@
             <Viewbox HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1">
                 <Label x:Name="lblSeek" Content="00:00:00" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1" FontFamily="Times New Roman" FontSize="11" FontWeight="Bold" RenderTransformOrigin="0.081,0.593"/>
             </Viewbox>
-            <Slider x:Name="sliSeek" Thumb.DragStarted="MySlider_DragStarted" Thumb.DragCompleted="MySlider_DragCompleted" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="22" ValueChanged="sliSeek_ValueChanged" Focusable="False" Cursor="Hand" IsMoveToPointEnabled="True" IsSelectionRangeEnabled="True" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="4" Grid.RowSpan="1"/>
+            <Slider x:Name="sliSeek" Thumb.DragStarted="MySlider_DragStarted" Thumb.DragCompleted="MySlider_DragCompleted" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="22" Focusable="False" Cursor="Hand" IsMoveToPointEnabled="True" IsSelectionRangeEnabled="True" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="4" Grid.RowSpan="1" PreviewMouseLeftButtonDown="sliSeek_PreviewMouseLeftButtonDown"/>
             <Viewbox HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1">
                 <Label x:Name="lblTotalSeek" Content="00:00:00" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" RenderTransformOrigin="0.375,0.452" Width="Auto" Height="Auto" Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1" FontFamily="Times New Roman" FontSize="11" FontWeight="Bold"/>
             </Viewbox>
@@ -80,7 +79,7 @@
                     </Rectangle>
                 </ToggleButton>
             </Viewbox>
-            <Slider x:Name="sliVol" Thumb.DragStarted="VolSlider_DragStarted" Thumb.DragCompleted="VolSlider_DragCompleted" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="21" ValueChanged="sliVol_ValueChanged" Maximum="100" RenderTransformOrigin="0.556,-0.12" Background="{x:Null}" Foreground="#FFFBFBFB" OpacityMask="Black" AutoToolTipPlacement="BottomRight" MouseEnter="sliVol_MouseEnter" Cursor="Hand" IsMoveToPointEnabled="True" Grid.Column="9" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="1"/>
+            <Slider x:Name="sliVol" Thumb.DragStarted="VolSlider_DragStarted" Thumb.DragCompleted="VolSlider_DragCompleted" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="21" Maximum="100" RenderTransformOrigin="0.556,-0.12" Background="{x:Null}" Foreground="#FFFBFBFB" OpacityMask="Black" AutoToolTipPlacement="BottomRight" MouseEnter="sliVol_MouseEnter" Cursor="Hand" IsMoveToPointEnabled="True" Grid.Column="9" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="1" ValueChanged="sliVol_ValueChanged"/>
             <Viewbox HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Grid.Column="11" Grid.Row="2" Grid.ColumnSpan="1" Grid.RowSpan="1">
                 <ToggleButton x:Name="tBtnExpand" Style="{DynamicResource MetroCircleToggleButtonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,-2,6,-1" Height="50" Width="50" Click="tBtnExpand_Click" Grid.Column="11" Grid.ColumnSpan="1" Grid.RowSpan="1">
                     <Rectangle Width="25" Height="25" Fill="{DynamicResource BlackBrush}">
