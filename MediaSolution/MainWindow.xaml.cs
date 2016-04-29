@@ -93,6 +93,7 @@ namespace MediaSolution
                 timer.Stop();
                 btnPlayPause.Content = "Play";
                 sliSeek.Value = 0;
+                lblSeek.Content = "00:00:00";
             }
             else
             {
@@ -191,6 +192,7 @@ namespace MediaSolution
                 timer.Stop();
                 btnPlayPause.Content = "Play";
                 sliSeek.Value = 0;
+                lblSeek.Content = "00:00:00";
                 createNewME();
                 loadPlayer(playIndex);
             }
