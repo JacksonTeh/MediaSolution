@@ -57,6 +57,7 @@ namespace MediaSolution
         void timer_Tick(object sender, EventArgs e)
         {
             sliSeek.Value = mePlayer.Position.TotalSeconds;
+            lblSeek.Content = mePlayer.Position.ToString(@"hh\:mm\:ss");
         }
 
         private void btnPlayPause_Click(object sender, RoutedEventArgs e)
